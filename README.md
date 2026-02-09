@@ -27,7 +27,7 @@
 ## How it works
 
 ```
-Upload file → Get 4-digit code → Share code → Recipient downloads → Close tab → File gone 💨
+Upload file → Get 4-digit code → Share code → Recipient downloads → Close tab → File gone (after 3 minutes automatically) 💨
 ```
 
 That's it. Files only exist while your browser tab is open. The moment you close it, everything gets wiped.
