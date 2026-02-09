@@ -3,7 +3,9 @@
   <img src="./public/icon.svg" alt="EasyTransfer" width="90" />
   <h1>EasyTransfer</h1>
   <p><b>Drop a file. Get a code. Share it. Done.</b></p>
-  <p>Temporary file sharing that disappears when you close the tab.<br />No accounts, no cloud storage, no nonsense.</p>
+  <p>Temporary file sharing that disappears after 3 minutes.<br />No accounts, no cloud storage, no nonsense.</p>
+
+  <p><b>Want to share files more securely with JWT(jsonwebtokens) ?? try file share Secure with JWT</b></p>
   <br />
   <a href="https://easytransfer.vercel.app">
     <img src="https://img.shields.io/badge/▶_Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />

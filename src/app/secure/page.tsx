@@ -292,7 +292,7 @@ export default function SecurePage() {
 
       <footer className="py-4 px-4 border-t border-emerald-500/5">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-600">
-          <p>Made with ❤️ for secure file sharing</p>
+          <p>Made with ❤️ by @sjx for secure file sharing</p>
           <p className="flex items-center gap-1">
             <Shield className="w-3.5 h-3.5 text-emerald-500" />
             Protected with JWT (HS256)

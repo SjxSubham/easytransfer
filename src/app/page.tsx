@@ -163,7 +163,7 @@ export default function Home() {
             )}
 
             <a
-              href="https://github.com/easytransfer"
+              href="https://github.com/sjxsubham/easytransfer"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-gray-500 hover:text-white transition-colors"
