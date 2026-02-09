@@ -174,7 +174,7 @@ export default function Home() {
 
             {/* GitHub Link */}
             <a
-              href="https://github.com"
+              href="https://github.com/easytransfer"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-gray-500 hover:text-white transition-colors"
