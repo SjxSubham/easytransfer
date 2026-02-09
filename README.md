@@ -7,7 +7,7 @@
 
   <p><b>Want to share files more securely with JWT(jsonwebtokens) ?? try file share Secure with JWT</b></p>
   <br />
-  <a href="https://easytransfer.vercel.app">
+  <a href="https://easyt.foo.ng">
     <img src="https://img.shields.io/badge/▶_Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
   </a>
   <a href="https://github.com/yourusername/easytransfer">
