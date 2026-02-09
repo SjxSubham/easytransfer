@@ -64,11 +64,6 @@ npm run build
 npm start
 ```
 
-## License
-
-MIT — do whatever you want with it.
-
----
 
 <div align="center">
   <sub>Built for people who just want to share a damn file.</sub>
