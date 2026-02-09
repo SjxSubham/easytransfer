@@ -71,7 +71,6 @@ export default function SecureUploadSection({
 
   const uploadFile = useCallback(
     async (file: File) => {
-      // Validate file
       const validationError = validateFile(file);
       if (validationError) {
         setError(validationError);
@@ -90,7 +89,6 @@ export default function SecureUploadSection({
         formData.append("file", file);
         formData.append("sessionId", sessionIdRef.current);
 
-        // Simulate progress
         progressInterval = setInterval(() => {
           setUploadProgress((prev) => {
             if (prev >= 90) {
@@ -111,14 +109,12 @@ export default function SecureUploadSection({
         }
         setUploadProgress(100);
 
-        // Safely parse JSON
         let data;
         const contentType = response.headers.get("content-type") || "";
         if (contentType.includes("application/json")) {
           try {
             data = await response.json();
-          } catch (parseError) {
-            console.error("Failed to parse JSON response:", parseError);
+          } catch {
             throw new Error(
               "Server returned an invalid response. Please try again.",
             );
@@ -126,7 +122,7 @@ export default function SecureUploadSection({
         } else {
           const text = await response.text();
           console.error(
-            "Non-JSON response from secure upload:",
+            "Non-JSON response:",
             response.status,
             text.substring(0, 200),
           );
@@ -165,7 +161,6 @@ export default function SecureUploadSection({
         if (progressInterval) {
           clearInterval(progressInterval);
         }
-        console.error("Secure upload error:", err);
         setError(err instanceof Error ? err.message : "Failed to upload file");
         setStatus("error");
       }
@@ -240,7 +235,6 @@ export default function SecureUploadSection({
 
   return (
     <div className="w-full">
-      {/* Upload Area */}
       {status === "idle" && (
         <div
           className={`relative border-2 border-dashed rounded-2xl p-8 transition-all duration-300 cursor-pointer ${
@@ -287,7 +281,6 @@ export default function SecureUploadSection({
         </div>
       )}
 
-      {/* Uploading State */}
       {status === "uploading" && (
         <div className="bg-zinc-900 border border-emerald-500/20 rounded-2xl p-6 text-center">
           <div className="flex flex-col items-center gap-4">
@@ -310,7 +303,6 @@ export default function SecureUploadSection({
         </div>
       )}
 
-      {/* Success State */}
       {status === "success" && lastUploadedFile && (
         <div className="bg-zinc-900 border border-emerald-500/20 rounded-2xl p-6">
           <div className="flex flex-col items-center gap-4 mb-6">
@@ -347,7 +339,6 @@ export default function SecureUploadSection({
         </div>
       )}
 
-      {/* Error State */}
       {status === "error" && (
         <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6">
           <div className="flex flex-col items-center gap-4">
@@ -370,7 +361,6 @@ export default function SecureUploadSection({
         </div>
       )}
 
-      {/* Rate Limit Info */}
       {status === "idle" && (
         <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-500">
           <span>Remaining uploads:</span>
@@ -382,7 +372,6 @@ export default function SecureUploadSection({
         </div>
       )}
 
-      {/* Active Files */}
       {activeFiles.length > 0 && status !== "success" && (
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">

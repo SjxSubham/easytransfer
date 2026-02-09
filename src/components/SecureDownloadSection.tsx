@@ -242,15 +242,10 @@ export default function SecureDownloadSection() {
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-400 mb-4">
           <ShieldCheck className="w-7 h-7" />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Secure Receive
-        </h2>
-        <p className="text-gray-500">
-          Paste the secure token to download
-        </p>
+        <h2 className="text-2xl font-bold text-white mb-2">Secure Receive</h2>
+        <p className="text-gray-500">Paste the secure token to download</p>
       </div>
 
-      {/* Token Input */}
       <div className="mb-6">
         <div className="relative">
           <div className="flex items-center gap-2 mb-2">
@@ -271,7 +266,6 @@ export default function SecureDownloadSection() {
             autoCorrect="off"
             spellCheck="false"
           />
-          {/* Paste button */}
           <button
             onClick={handlePaste}
             className="absolute top-9 right-3 flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-medium rounded-lg transition-colors border border-emerald-500/20"
@@ -283,7 +277,6 @@ export default function SecureDownloadSection() {
         </div>
       </div>
 
-      {/* Action Buttons */}
       {status === "idle" && (
         <button
           onClick={checkToken}
@@ -298,18 +291,17 @@ export default function SecureDownloadSection() {
         </button>
       )}
 
-      {/* Checking Status */}
       {status === "checking" && (
         <div className="flex flex-col items-center gap-3 py-4">
           <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
-          <p className="text-gray-400">Verifying token & searching for file...</p>
+          <p className="text-gray-400">
+            Verifying token & searching for file...
+          </p>
         </div>
       )}
 
-      {/* File Found */}
       {status === "ready" && fileInfo && (
         <div className="space-y-4 animate-fade-in">
-          {/* Verification Badge */}
           <div className="flex items-center justify-center gap-2 p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
             <span className="text-sm font-medium text-emerald-400">
@@ -317,7 +309,6 @@ export default function SecureDownloadSection() {
             </span>
           </div>
 
-          {/* File Preview Card */}
           <div className="bg-black rounded-xl p-4 border border-emerald-500/20">
             <div className="flex items-center gap-4">
               <div className="flex-shrink-0 p-3 bg-emerald-500/10 rounded-xl">
@@ -343,7 +334,6 @@ export default function SecureDownloadSection() {
             </div>
           </div>
 
-          {/* Download Button */}
           <button
             onClick={downloadFile}
             disabled={isDownloading}
@@ -365,7 +355,6 @@ export default function SecureDownloadSection() {
             )}
           </button>
 
-          {/* New Download Button */}
           <button
             onClick={resetForm}
             className="w-full py-3 text-gray-500 hover:text-white transition-colors"
@@ -375,7 +364,6 @@ export default function SecureDownloadSection() {
         </div>
       )}
 
-      {/* Invalid Token */}
       {status === "invalid-token" && (
         <div className="space-y-4 animate-fade-in">
           <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4">
@@ -405,7 +393,6 @@ export default function SecureDownloadSection() {
         </div>
       )}
 
-      {/* Not Found / Error */}
       {(status === "not-found" || status === "error") && (
         <div className="space-y-4 animate-fade-in">
           <div className="bg-white/5 border border-white/10 rounded-xl p-4">
@@ -435,7 +422,6 @@ export default function SecureDownloadSection() {
         </div>
       )}
 
-      {/* Help Text */}
       <div className="mt-6 text-center">
         <p className="text-xs text-gray-600">
           The token is cryptographically verified before granting access.

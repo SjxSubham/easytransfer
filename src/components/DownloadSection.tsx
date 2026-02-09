@@ -223,7 +223,6 @@ export default function DownloadSection() {
         <p className="text-gray-500">Enter the 4-digit code to download</p>
       </div>
 
-      {/* Code Input */}
       <div className="mb-6">
         <div className="flex justify-center gap-3" onPaste={handlePaste}>
           {code.map((digit, index) => (
@@ -249,7 +248,6 @@ export default function DownloadSection() {
         </div>
       </div>
 
-      {/* Action Buttons */}
       {status === "idle" && (
         <button
           onClick={checkCode}
@@ -264,7 +262,6 @@ export default function DownloadSection() {
         </button>
       )}
 
-      {/* Checking Status */}
       {status === "checking" && (
         <div className="flex flex-col items-center gap-3 py-4">
           <Loader2 className="w-8 h-8 text-white animate-spin" />
@@ -272,10 +269,8 @@ export default function DownloadSection() {
         </div>
       )}
 
-      {/* File Found */}
       {status === "ready" && fileInfo && (
         <div className="space-y-4 animate-fade-in">
-          {/* File Preview Card */}
           <div className="bg-black rounded-xl p-4 border border-white/20">
             <div className="flex items-center gap-4">
               <div className="flex-shrink-0 p-3 bg-white/10 rounded-xl">
@@ -301,7 +296,6 @@ export default function DownloadSection() {
             </div>
           </div>
 
-          {/* Download Button */}
           <button
             onClick={downloadFile}
             disabled={isDownloading}
@@ -323,7 +317,6 @@ export default function DownloadSection() {
             )}
           </button>
 
-          {/* New Download Button */}
           <button
             onClick={resetForm}
             className="w-full py-3 text-gray-500 hover:text-white transition-colors"
@@ -333,7 +326,6 @@ export default function DownloadSection() {
         </div>
       )}
 
-      {/* Not Found / Error */}
       {(status === "not-found" || status === "error") && (
         <div className="space-y-4 animate-fade-in">
           <div className="bg-white/5 border border-white/10 rounded-xl p-4">
@@ -363,7 +355,6 @@ export default function DownloadSection() {
         </div>
       )}
 
-      {/* Help Text */}
       <div className="mt-6 text-center">
         <p className="text-xs text-gray-600">
           Ask the sender for the 4-digit code to access their file

@@ -17,10 +17,8 @@ export async function GET(
       );
     }
 
-    // Normalize code to uppercase
     const normalizedCode = code.toUpperCase().trim();
 
-    // Validate code format (4 alphanumeric characters)
     if (!/^[A-Z0-9]{4}$/.test(normalizedCode)) {
       return NextResponse.json(
         { success: false, error: "Invalid code format" },
@@ -28,7 +26,6 @@ export async function GET(
       );
     }
 
-    // Get the file from storage
     const file = getFileByCode(normalizedCode);
 
     if (!file) {
@@ -42,8 +39,6 @@ export async function GET(
       );
     }
 
-    // Create the response with the file data
-    // Convert Buffer to Uint8Array for NextResponse compatibility
     const response = new NextResponse(new Uint8Array(file.data), {
       status: 200,
       headers: {
@@ -73,7 +68,6 @@ export async function GET(
   }
 }
 
-// HEAD request to check file availability without downloading
 export async function HEAD(
   request: NextRequest,
   { params }: { params: Promise<{ code: string }> },

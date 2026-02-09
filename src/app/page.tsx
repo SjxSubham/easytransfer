@@ -29,13 +29,11 @@ export default function Home() {
   const heartbeatIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const isUnloadingRef = useRef(false);
 
-  // Generate session ID on mount
   useEffect(() => {
     const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
     setSessionId(newSessionId);
   }, []);
 
-  // Heartbeat to keep session alive
   const sendHeartbeat = useCallback(async () => {
     if (!sessionId || activeFiles.length === 0 || isUnloadingRef.current)
       return;
@@ -58,13 +56,10 @@ export default function Home() {
     }
   }, [sessionId, activeFiles.length]);
 
-  // Start heartbeat interval when there are active files
   useEffect(() => {
     if (activeFiles.length > 0 && sessionId) {
-      // Send initial heartbeat
       sendHeartbeat();
 
-      // Set up interval
       heartbeatIntervalRef.current = setInterval(
         sendHeartbeat,
         HEARTBEAT_INTERVAL,
@@ -77,7 +72,6 @@ export default function Home() {
         }
       };
     } else {
-      // Clear interval if no active files
       if (heartbeatIntervalRef.current) {
         clearInterval(heartbeatIntervalRef.current);
         heartbeatIntervalRef.current = null;
@@ -85,20 +79,17 @@ export default function Home() {
     }
   }, [activeFiles.length, sessionId, sendHeartbeat]);
 
-  // Cleanup on page unload
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (activeFiles.length > 0) {
         isUnloadingRef.current = true;
 
-        // Send delete request using sendBeacon to /api/session for reliability
         const data = JSON.stringify({ sessionId });
         navigator.sendBeacon(
           "/api/session",
           new Blob([data], { type: "application/json" }),
         );
 
-        // Show confirmation dialog
         e.preventDefault();
         e.returnValue =
           "You have active file shares. Closing this tab will delete them.";
@@ -108,7 +99,6 @@ export default function Home() {
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden" && activeFiles.length > 0) {
-        // Send heartbeat when tab becomes hidden to extend session
         sendHeartbeat();
       }
     };
@@ -122,26 +112,27 @@ export default function Home() {
     };
   }, [activeFiles.length, sessionId, sendHeartbeat]);
 
-  // Handle successful upload
   const handleUploadSuccess = useCallback((file: ActiveFile) => {
     setActiveFiles((prev) => [...prev, file]);
     setRemainingUploads((prev) => Math.max(0, prev - 1));
   }, []);
 
-  // Handle file removal
   const handleFileRemove = useCallback(async (code: string) => {
     setActiveFiles((prev) => prev.filter((f) => f.code !== code));
   }, []);
 
   return (
     <main className="min-h-screen flex flex-col bg-black">
-      {/* Header */}
       <header className="w-full py-4 px-4 sm:px-6 border-b border-white/10">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-white rounded-xl">
-              <Share2 className="w-6 h-6 text-black" />
-            </div>
+            <img
+              src="./icon.svg"
+              className="h-10 w-10 bg-transparent"
+              alt="EasyTransfer"
+              title="EasyTransfer"
+            />
+
             <div>
               <h1 className="text-xl font-bold text-white">EasyTransfer</h1>
               <p className="text-xs text-gray-500 hidden sm:block">
@@ -151,7 +142,6 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Connection Status */}
             {activeFiles.length > 0 && (
               <div className="flex items-center gap-2 text-sm">
                 {connectionStatus === "connected" ? (
@@ -172,7 +162,6 @@ export default function Home() {
               </div>
             )}
 
-            {/* GitHub Link */}
             <a
               href="https://github.com/easytransfer"
               target="_blank"
@@ -186,10 +175,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12">
         <div className="w-full max-w-xl">
-          {/* Hero Section */}
           <div className="text-center mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
               Share Files{" "}
@@ -203,7 +190,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Secure Sharing Button */}
           <div className="mb-6">
             <Link href="/secure" className="block">
               <div className="group relative overflow-hidden flex items-center justify-center gap-3 py-3.5 px-6 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 border border-emerald-500/20 rounded-xl hover:border-emerald-500/40 hover:from-emerald-500/15 hover:to-emerald-600/15 transition-all duration-300 cursor-pointer">
@@ -231,7 +217,6 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Tab Switcher */}
           <div className="flex mb-6 bg-zinc-900 rounded-xl p-1.5 border border-white/5">
             <button
               onClick={() => setActiveTab("upload")}
@@ -257,7 +242,6 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Tab Content */}
           <div className="animate-fade-in">
             {activeTab === "upload" ? (
               <UploadSection
@@ -274,7 +258,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Info Banner */}
       <div className="px-4 pb-4">
         <div className="max-w-xl mx-auto">
           <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-4">
@@ -295,15 +278,13 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="py-4 px-4 border-t border-white/5">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-600">
-          <p>Made with ❤️ for easy file sharing</p>
+          <p>Made by @sjx for easy file sharing</p>
           <p>Files are temporary and encrypted in transit</p>
         </div>
       </footer>
 
-      {/* Active Files Indicator (Mobile) */}
       {activeFiles.length > 0 && activeTab === "download" && (
         <div className="fixed bottom-4 left-4 right-4 sm:hidden">
           <button

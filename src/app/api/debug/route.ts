@@ -3,10 +3,6 @@ import { getStorageStats } from "@/lib/storage";
 
 export const dynamic = "force-dynamic";
 
-/**
- * GET /api/debug
- * Debug endpoint to check storage state
- */
 export async function GET() {
   try {
     const stats = getStorageStats();
@@ -16,18 +12,21 @@ export async function GET() {
       timestamp: new Date().toISOString(),
       storage: {
         totalFiles: stats.totalFiles,
-        totalSessions: stats.totalSessions,
+        activeSessions: stats.totalSessions,
+        maxConcurrentSessions: stats.maxConcurrentSessions,
+        sessionCapacity: `${stats.totalSessions}/${stats.maxConcurrentSessions}`,
         totalSizeBytes: stats.totalSize,
         totalSizeMB: (stats.totalSize / (1024 * 1024)).toFixed(2),
         activeCodes: stats.activeCodes,
       },
       config: {
-        sessionTimeoutMs: parseInt(
-          process.env.SESSION_TIMEOUT || "60000",
-          10,
-        ),
+        sessionTimeoutMs: parseInt(process.env.SESSION_TIMEOUT || "180000", 10),
         maxFileSizeMB: 10,
         maxUploadsPerIP: 3,
+        maxConcurrentSessions: parseInt(
+          process.env.MAX_CONCURRENT_SESSIONS || "30",
+          10,
+        ),
       },
     });
   } catch (error) {

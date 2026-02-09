@@ -1,22 +1,23 @@
 <div align="center">
-
-  <img src="public/icon.svg" alt="EasyTransfer" width="90" />
-
-  # EasyTransfer
-
-  **Drop a file. Get a code. Share it. Done.**
-
-  Temporary file sharing that disappears when you close the tab. No accounts, no cloud storage, no nonsense.
-
-  [![Live Demo](https://img.shields.io/badge/▶_Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://easytransfer.vercel.app)
-  [![GitHub](https://img.shields.io/badge/Source_Code-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername/easytransfer)
-
-  ![Next.js](https://img.shields.io/badge/Next.js_14-000?style=flat-square&logo=nextdotjs&logoColor=white)
-  ![React](https://img.shields.io/badge/React_18-61DAFB?style=flat-square&logo=react&logoColor=black)
-  ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
-  ![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white)
-
+  <br />
+  <img src="./public/icon.svg" alt="EasyTransfer" width="90" />
+  <h1>EasyTransfer</h1>
+  <p><b>Drop a file. Get a code. Share it. Done.</b></p>
+  <p>Temporary file sharing that disappears when you close the tab.<br />No accounts, no cloud storage, no nonsense.</p>
+  <br />
+  <a href="https://easytransfer.vercel.app">
+    <img src="https://img.shields.io/badge/▶_Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+  </a>
+  <a href="https://github.com/yourusername/easytransfer">
+    <img src="https://img.shields.io/badge/Source_Code-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+  <br /><br />
+  <img src="https://img.shields.io/badge/Next.js_14-000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React_18-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white" alt="JWT" />
+  <br /><br />
 </div>
 
 ---

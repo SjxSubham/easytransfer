@@ -61,7 +61,6 @@ export default function CodeDisplay({
 
   return (
     <div className="w-full">
-      {/* Code Display */}
       <div className="relative mb-4">
         <div className="flex items-center justify-center gap-2 sm:gap-3 p-4 sm:p-6 bg-gradient-to-r from-white/5 to-white/10 rounded-xl border border-white/10">
           {code.split("").map((char, index) => (
@@ -78,7 +77,6 @@ export default function CodeDisplay({
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex gap-3">
         <button
           onClick={copyToClipboard}
@@ -112,7 +110,6 @@ export default function CodeDisplay({
         )}
       </div>
 
-      {/* Instructions */}
       <div className="mt-4 p-4 bg-white/5 rounded-lg border border-white/10">
         <p className="text-sm text-gray-400 text-center">
           Share this code with others to let them download your file.

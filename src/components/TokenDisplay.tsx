@@ -68,7 +68,6 @@ export default function TokenDisplay({
 
   return (
     <div className="w-full">
-      {/* Security Badge */}
       <div className="flex items-center justify-center gap-2 mb-4">
         <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
           <Shield className="w-3.5 h-3.5 text-emerald-400" />
@@ -84,7 +83,6 @@ export default function TokenDisplay({
         </div>
       </div>
 
-      {/* Token Display */}
       <div className="relative mb-4">
         <div className="p-4 bg-gradient-to-r from-emerald-500/5 to-white/5 rounded-xl border border-emerald-500/20">
           <div className="flex items-center gap-2 mb-2">
@@ -96,7 +94,9 @@ export default function TokenDisplay({
           <div
             className="font-mono text-sm text-white/80 break-all cursor-pointer bg-black/40 rounded-lg p-3 border border-white/5 hover:border-white/10 transition-colors"
             onClick={() => setShowFull(!showFull)}
-            title={showFull ? "Click to collapse" : "Click to expand full token"}
+            title={
+              showFull ? "Click to collapse" : "Click to expand full token"
+            }
           >
             {displayToken}
           </div>
@@ -119,7 +119,6 @@ export default function TokenDisplay({
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex gap-3">
         <button
           onClick={copyToClipboard}
@@ -153,13 +152,15 @@ export default function TokenDisplay({
         )}
       </div>
 
-      {/* Instructions */}
       <div className="mt-4 p-4 bg-emerald-500/5 rounded-lg border border-emerald-500/10">
         <p className="text-sm text-gray-400 text-center">
-          Share this <span className="text-emerald-400 font-medium">secure token</span> with others to let them download your file.
+          Share this{" "}
+          <span className="text-emerald-400 font-medium">secure token</span>{" "}
+          with others to let them download your file.
           <br />
           <span className="text-gray-500 text-xs mt-1 block">
-            🔒 The token is cryptographically signed — it cannot be guessed or forged.
+            🔒 The token is cryptographically signed — it cannot be guessed or
+            forged.
             <br />
             ⚠️ Keep this tab open — the file will be deleted when you close it.
           </span>

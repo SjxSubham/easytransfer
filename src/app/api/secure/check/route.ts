@@ -5,11 +5,6 @@ import { verifyToken, isJWTFormat } from "@/lib/jwt";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/**
- * POST /api/secure/check
- * Check if a JWT token is valid and the associated file is available.
- * Uses POST to avoid leaking tokens in URL/logs.
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -26,19 +21,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if it looks like a JWT
     if (!isJWTFormat(token)) {
       return NextResponse.json(
         {
           success: false,
           available: false,
-          error: "Invalid token format. Please paste the full token you received.",
+          error:
+            "Invalid token format. Please paste the full token you received.",
         },
         { status: 400 },
       );
     }
 
-    // Verify the JWT signature and expiration
     const payload = verifyToken(token);
 
     if (!payload) {
@@ -53,7 +47,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Token is valid - now check if the file still exists in storage
     const file = getFileByCode(payload.code);
 
     if (!file) {
@@ -68,11 +61,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(
-      `[Secure Check] Token verified for file: ${file.originalName} (${file.code})`,
-    );
-
-    // File is available - return info (from the verified token, not the raw storage)
     return NextResponse.json({
       success: true,
       available: true,

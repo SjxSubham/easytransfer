@@ -5,11 +5,6 @@ import { verifyToken, isJWTFormat } from "@/lib/jwt";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/**
- * POST /api/secure/download
- * Download a file using a verified JWT token.
- * Uses POST to keep the token in the request body (not URL/logs).
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -25,19 +20,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if it looks like a JWT
     if (!isJWTFormat(token)) {
       return NextResponse.json(
         {
           success: false,
-          error:
-            "Invalid token format. Please provide a valid access token.",
+          error: "Invalid token format. Please provide a valid access token.",
         },
         { status: 400 },
       );
     }
 
-    // Verify the JWT signature and expiration
     const payload = verifyToken(token);
 
     if (!payload) {
@@ -51,7 +43,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Token is valid - look up the file by the code embedded in the JWT
     const file = getFileByCode(payload.code);
 
     if (!file) {
@@ -65,11 +56,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extra verification: make sure the fileId in the token matches
     if (file.id !== payload.fileId) {
-      console.warn(
-        `[Secure Download] Token fileId mismatch: token=${payload.fileId}, storage=${file.id}`,
-      );
       return NextResponse.json(
         {
           success: false,
@@ -79,11 +66,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(
-      `[Secure Download] JWT-verified download: ${file.originalName} (${file.code})`,
-    );
-
-    // Serve the file
     const response = new NextResponse(new Uint8Array(file.data), {
       status: 200,
       headers: {

@@ -9,15 +9,11 @@ import {
 } from "@/lib/utils";
 import { signToken } from "@/lib/jwt";
 
-// Maximum file size: 10MB
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export async function POST(request: NextRequest) {
   try {
-    // Get client IP for rate limiting
     const clientIP = getClientIP(request.headers);
-
-    // Check rate limit
     const rateLimitResult = checkRateLimit(clientIP);
     if (!rateLimitResult.allowed) {
       return NextResponse.json(
@@ -33,13 +29,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse the multipart form data
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const sessionId =
       (formData.get("sessionId") as string) || generateSessionId();
 
-    // Validate file exists
     if (!file) {
       return NextResponse.json(
         {
@@ -50,7 +44,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file size
     if (!isValidFileSize(file.size)) {
       return NextResponse.json(
         {
@@ -61,7 +54,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file size is not zero
     if (file.size === 0) {
       return NextResponse.json(
         {
@@ -72,11 +64,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Read file data
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Sanitize filename
     const sanitizedFilename = sanitizeFilename(file.name);
     if (!sanitizedFilename) {
       return NextResponse.json(
@@ -88,7 +78,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Store the file
     const storedFile = storeFile(
       sanitizedFilename,
       file.name,
@@ -98,10 +87,8 @@ export async function POST(request: NextRequest) {
       sessionId,
     );
 
-    // Record this upload for rate limiting
     recordUpload(clientIP, storedFile.code);
 
-    // Generate a signed JWT token containing file access info
     const token = signToken({
       code: storedFile.code,
       fileId: storedFile.id,
@@ -111,11 +98,6 @@ export async function POST(request: NextRequest) {
       uploadedAt: storedFile.uploadedAt,
     });
 
-    console.log(
-      `[Secure Upload] File stored with JWT: ${storedFile.originalName} (${storedFile.code}) - Token length: ${token.length}`,
-    );
-
-    // Return success with JWT token instead of plain code
     return NextResponse.json({
       success: true,
       token,
@@ -129,13 +111,22 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("[Secure Upload] Error:", error);
 
-    // Handle specific errors
     if (error instanceof Error) {
       if (error.message === "Unable to generate unique code") {
         return NextResponse.json(
           {
             success: false,
             error: "Server is busy. Please try again in a moment.",
+          },
+          { status: 503 },
+        );
+      }
+      if (error.message === "Server is at capacity. Please try again later.") {
+        return NextResponse.json(
+          {
+            success: false,
+            error:
+              "Server is at capacity. Maximum 30 concurrent users reached. Please try again later.",
           },
           { status: 503 },
         );
@@ -152,7 +143,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Handle preflight requests for CORS
 export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,

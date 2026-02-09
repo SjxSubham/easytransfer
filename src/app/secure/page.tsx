@@ -29,13 +29,11 @@ export default function SecurePage() {
   const heartbeatIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const isUnloadingRef = useRef(false);
 
-  // Generate session ID on mount
   useEffect(() => {
     const newSessionId = `secure_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
     setSessionId(newSessionId);
   }, []);
 
-  // Heartbeat to keep session alive (reuses the same heartbeat API)
   const sendHeartbeat = useCallback(async () => {
     if (!sessionId || activeFiles.length === 0 || isUnloadingRef.current)
       return;
@@ -58,7 +56,6 @@ export default function SecurePage() {
     }
   }, [sessionId, activeFiles.length]);
 
-  // Start heartbeat interval when there are active files
   useEffect(() => {
     if (activeFiles.length > 0 && sessionId) {
       sendHeartbeat();
@@ -82,7 +79,6 @@ export default function SecurePage() {
     }
   }, [activeFiles.length, sessionId, sendHeartbeat]);
 
-  // Cleanup on page unload
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (activeFiles.length > 0) {
@@ -116,20 +112,17 @@ export default function SecurePage() {
     };
   }, [activeFiles.length, sessionId, sendHeartbeat]);
 
-  // Handle successful upload
   const handleUploadSuccess = useCallback((file: ActiveFile) => {
     setActiveFiles((prev) => [...prev, file]);
     setRemainingUploads((prev) => Math.max(0, prev - 1));
   }, []);
 
-  // Handle file removal
   const handleFileRemove = useCallback(async (code: string) => {
     setActiveFiles((prev) => prev.filter((f) => f.code !== code));
   }, []);
 
   return (
     <main className="min-h-screen flex flex-col bg-black">
-      {/* Header */}
       <header className="w-full py-4 px-4 sm:px-6 border-b border-emerald-500/10">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -157,7 +150,6 @@ export default function SecurePage() {
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Connection Status */}
             {activeFiles.length > 0 && (
               <div className="flex items-center gap-2 text-sm">
                 {connectionStatus === "connected" ? (
@@ -181,10 +173,8 @@ export default function SecurePage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12">
         <div className="w-full max-w-xl">
-          {/* Hero Section */}
           <div className="text-center mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
               Secure Share{" "}
@@ -193,12 +183,11 @@ export default function SecurePage() {
               </span>
             </h2>
             <p className="text-gray-500 max-w-md mx-auto">
-              Files are protected with cryptographically signed tokens.
-              Only users with a valid token can access your files.
+              Files are protected with cryptographically signed tokens. Only
+              users with a valid token can access your files.
             </p>
           </div>
 
-          {/* Tab Switcher */}
           <div className="flex mb-6 bg-zinc-900 rounded-xl p-1.5 border border-emerald-500/10">
             <button
               onClick={() => setActiveTab("upload")}
@@ -224,7 +213,6 @@ export default function SecurePage() {
             </button>
           </div>
 
-          {/* Tab Content */}
           <div className="animate-fade-in">
             {activeTab === "upload" ? (
               <SecureUploadSection
@@ -241,7 +229,6 @@ export default function SecurePage() {
         </div>
       </div>
 
-      {/* Info Banner */}
       <div className="px-4 pb-4">
         <div className="max-w-xl mx-auto">
           <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-4">
@@ -260,9 +247,7 @@ export default function SecurePage() {
                     </span>
                   </li>
                   <li>Share the token with your recipient</li>
-                  <li>
-                    Token cannot be guessed, forged, or brute-forced
-                  </li>
+                  <li>Token cannot be guessed, forged, or brute-forced</li>
                   <li>Token expires automatically after 1 hour</li>
                   <li>File is deleted when you close this tab</li>
                 </ul>
@@ -272,7 +257,6 @@ export default function SecurePage() {
         </div>
       </div>
 
-      {/* Security Comparison */}
       <div className="px-4 pb-4">
         <div className="max-w-xl mx-auto">
           <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-4">
@@ -306,7 +290,6 @@ export default function SecurePage() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="py-4 px-4 border-t border-emerald-500/5">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-600">
           <p>Made with ❤️ for secure file sharing</p>
@@ -317,7 +300,6 @@ export default function SecurePage() {
         </div>
       </footer>
 
-      {/* Active Files Indicator (Mobile) */}
       {activeFiles.length > 0 && activeTab === "download" && (
         <div className="fixed bottom-4 left-4 right-4 sm:hidden">
           <button

@@ -1,13 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { updateHeartbeat, deleteSession, getSessionFiles } from '@/lib/storage';
+import { NextRequest, NextResponse } from "next/server";
+import { updateHeartbeat, getSessionFiles } from "@/lib/storage";
 
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-/**
- * POST /api/heartbeat
- * Updates the heartbeat timestamp for a session to keep files alive
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -15,8 +11,8 @@ export async function POST(request: NextRequest) {
 
     if (!sessionId) {
       return NextResponse.json(
-        { success: false, error: 'Session ID is required' },
-        { status: 400 }
+        { success: false, error: "Session ID is required" },
+        { status: 400 },
       );
     }
 
@@ -24,8 +20,8 @@ export async function POST(request: NextRequest) {
 
     if (!updated) {
       return NextResponse.json(
-        { success: false, error: 'Session not found or expired' },
-        { status: 404 }
+        { success: false, error: "Session not found or expired" },
+        { status: 404 },
       );
     }
 
@@ -34,49 +30,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       activeFiles: files.length,
-      files: files.map(f => ({
+      files: files.map((f) => ({
         code: f.code,
         fileName: f.originalName,
         fileSize: f.size,
       })),
     });
   } catch (error) {
-    console.error('[Heartbeat] Error:', error);
+    console.error("[Heartbeat] Error:", error);
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
-    );
-  }
-}
-
-/**
- * DELETE /api/heartbeat
- * Explicitly end a session and delete all associated files
- * Called when user closes the tab (via beforeunload/pagehide)
- */
-export async function DELETE(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { sessionId } = body;
-
-    if (!sessionId) {
-      return NextResponse.json(
-        { success: false, error: 'Session ID is required' },
-        { status: 400 }
-      );
-    }
-
-    const deletedCount = deleteSession(sessionId);
-
-    return NextResponse.json({
-      success: true,
-      deletedFiles: deletedCount,
-    });
-  } catch (error) {
-    console.error('[Heartbeat] Delete session error:', error);
-    return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
+      { success: false, error: "Internal server error" },
+      { status: 500 },
     );
   }
 }

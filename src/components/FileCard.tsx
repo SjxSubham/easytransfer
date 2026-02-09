@@ -13,7 +13,6 @@ export default function FileCard({ file, onRemove }: FileCardProps) {
   const [copied, setCopied] = useState(false);
   const [timeActive, setTimeActive] = useState("");
 
-  // Update active time every second
   useEffect(() => {
     const updateTime = () => {
       const elapsed = Date.now() - file.uploadedAt;
@@ -72,7 +71,6 @@ export default function FileCard({ file, onRemove }: FileCardProps) {
   return (
     <div className="bg-zinc-900 border border-white/10 rounded-xl p-4 animate-fade-in hover:border-white/20 transition-all duration-300">
       <div className="flex items-start justify-between gap-3">
-        {/* File Info */}
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <div className="flex-shrink-0 p-2 bg-white/5 rounded-lg">
             {getFileIcon()}
@@ -90,7 +88,6 @@ export default function FileCard({ file, onRemove }: FileCardProps) {
           </div>
         </div>
 
-        {/* Remove Button */}
         {onRemove && (
           <button
             onClick={() => onRemove(file.code)}
@@ -102,7 +99,6 @@ export default function FileCard({ file, onRemove }: FileCardProps) {
         )}
       </div>
 
-      {/* Code Display */}
       <div className="mt-4">
         <div className="flex items-center justify-between bg-black rounded-lg p-3 border border-white/5">
           <div className="flex items-center gap-2">
@@ -136,7 +132,6 @@ export default function FileCard({ file, onRemove }: FileCardProps) {
         </div>
       </div>
 
-      {/* Status Bar */}
       <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
         <div className="flex items-center gap-1.5">
           <span className="relative flex h-2 w-2">
@@ -151,7 +146,6 @@ export default function FileCard({ file, onRemove }: FileCardProps) {
         </div>
       </div>
 
-      {/* Share Instructions */}
       <div className="mt-3 pt-3 border-t border-white/5">
         <p className="text-xs text-gray-600 text-center">
           Share this code with others to let them download the file

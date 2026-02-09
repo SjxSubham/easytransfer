@@ -68,7 +68,6 @@ export default function UploadSection({
 
   const uploadFile = useCallback(
     async (file: File) => {
-      // Validate file
       const validationError = validateFile(file);
       if (validationError) {
         setError(validationError);
@@ -87,7 +86,6 @@ export default function UploadSection({
         formData.append("file", file);
         formData.append("sessionId", sessionIdRef.current);
 
-        // Simulate progress (since we can't get real progress with fetch)
         progressInterval = setInterval(() => {
           setUploadProgress((prev) => {
             if (prev >= 90) {
@@ -108,23 +106,20 @@ export default function UploadSection({
         }
         setUploadProgress(100);
 
-        // Safely parse JSON - handle non-JSON responses gracefully
         let data;
         const contentType = response.headers.get("content-type") || "";
         if (contentType.includes("application/json")) {
           try {
             data = await response.json();
-          } catch (parseError) {
-            console.error("Failed to parse JSON response:", parseError);
+          } catch {
             throw new Error(
               "Server returned an invalid response. Please try again.",
             );
           }
         } else {
-          // Response is not JSON (e.g. HTML error page from Next.js)
           const text = await response.text();
           console.error(
-            "Non-JSON response from upload:",
+            "Non-JSON response:",
             response.status,
             text.substring(0, 200),
           );
@@ -155,7 +150,6 @@ export default function UploadSection({
         if (progressInterval) {
           clearInterval(progressInterval);
         }
-        console.error("Upload error:", err);
         setError(err instanceof Error ? err.message : "Failed to upload file");
         setStatus("error");
       }
@@ -172,7 +166,6 @@ export default function UploadSection({
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Only set dragging to false if we're leaving the dropzone entirely
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX;
     const y = e.clientY;
@@ -206,7 +199,6 @@ export default function UploadSection({
       if (files && files.length > 0) {
         uploadFile(files[0]);
       }
-      // Reset input so same file can be selected again
       if (e.target) {
         e.target.value = "";
       }
@@ -225,7 +217,6 @@ export default function UploadSection({
     setError(null);
     setUploadProgress(0);
     setLastUploadedFile(null);
-    // Also reset the file input to avoid stale file references
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -233,7 +224,6 @@ export default function UploadSection({
 
   return (
     <div className="w-full">
-      {/* Upload Area */}
       {status === "idle" && (
         <div
           className={`relative border-2 border-dashed rounded-2xl p-8 transition-all duration-300 cursor-pointer ${
@@ -274,7 +264,6 @@ export default function UploadSection({
         </div>
       )}
 
-      {/* Uploading State */}
       {status === "uploading" && (
         <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 text-center">
           <div className="flex flex-col items-center gap-4">
@@ -297,7 +286,6 @@ export default function UploadSection({
         </div>
       )}
 
-      {/* Success State */}
       {status === "success" && lastUploadedFile && (
         <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6">
           <div className="flex flex-col items-center gap-4 mb-6">
@@ -329,7 +317,6 @@ export default function UploadSection({
         </div>
       )}
 
-      {/* Error State */}
       {status === "error" && (
         <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6">
           <div className="flex flex-col items-center gap-4">
@@ -352,7 +339,6 @@ export default function UploadSection({
         </div>
       )}
 
-      {/* Rate Limit Info */}
       {status === "idle" && (
         <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-500">
           <span>Remaining uploads:</span>
@@ -364,7 +350,6 @@ export default function UploadSection({
         </div>
       )}
 
-      {/* Active Files */}
       {activeFiles.length > 0 && status !== "success" && (
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
