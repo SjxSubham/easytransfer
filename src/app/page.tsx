@@ -269,8 +269,8 @@ export default function Home() {
                   <li>Upload any file up to 10MB</li>
                   <li>Get a unique 4-digit code</li>
                   <li>Share the code with anyone</li>
-                  <li>File is available while this tab is open</li>
-                  <li>File is automatically deleted when you close the tab</li>
+                  <li>File is available while this tab is open upto 3 minutes</li>
+                  <li>File is automatically deleted after 3 minutes</li>
                 </ul>
               </div>
             </div>
