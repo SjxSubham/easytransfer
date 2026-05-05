@@ -43,31 +43,3 @@ That's it. Files only exist while your browser tab is open. The moment you close
 |  **Mobile Friendly** | Works great on any screen size |
 |  **Rate Limited** | 3 uploads per IP to keep things fair |
 
-## Run Locally
-
-Make sure you have **Node.js 18+** installed.
-
-```bash
-# clone it
-git clone https://github.com/yourusername/easytransfer.git
-cd easytransfer
-
-# install deps
-npm install
-
-# start dev server
-npm run dev
-```
-
-Open **[localhost:3000](http://localhost:3000)** — you're up and running.
-
-
-```bash
-npm run build
-npm start
-```
-
-
-<div align="center">
-  <sub>Built for people who just want to share a damn file.</sub>
-</div>
